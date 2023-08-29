@@ -9,9 +9,14 @@ import (
 	"github.com/sqlc-dev/sqlc-go/codegen"
 )
 
+type Output struct {
+	Env []string `json:"env"`
+}
+
 func generate(_ context.Context, _ *plugin.CodeGenRequest) (*plugin.CodeGenResponse, error) {
-	env := os.Environ()
-	blob, err := json.Marshal(env)
+	blob, err := json.MarshalIndent(Output{
+		Env: os.Environ(),
+	}, "", "  ")
 	if err != nil {
 		return nil, err
 	}
